@@ -1,4 +1,10 @@
-## Usage:
+## Installation
+
+ * Requires `sox` CLI to be installed. This can be installed via most linux
+   distribution's package managers.
+ * `npm install --save sox`
+
+## Usage
 
 ### identify an audio file
 
