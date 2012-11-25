@@ -4,7 +4,7 @@ var childProcess = require('child_process')
   , util = require('util')
 
 exports.identify = identify;
-exports.Transcode = Transcode;
+exports.transcode = transcode;
 
 var SENTINEL = /[\n\r]/
 
@@ -78,6 +78,10 @@ function identify(inputFile, callback){
       });
     });
   }
+}
+
+function transcode(inputFile, outputFile, options) {
+  return new Transcode(inputFile, outputFile, options);
 }
 
 function Transcode(inputFile, outputFile, options) {
@@ -159,12 +163,13 @@ Transcode.prototype.start = function() {
         err.args = args;
         self.emit('error', err);
       } else {
-        identify(outputFile, function(err, dest) {
+        identify(self.outputFile, function(err, dest) {
           if (err) {
             self.emit('error', err);
           } else {
             self.emit('dest', dest);
-            self.emit('success');
+            self.emit('progress', src.duration, src.duration);
+            self.emit('end');
           }
         });
       }

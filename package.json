@@ -19,7 +19,9 @@
   ],
   "license": "BSD",
   "devDependencies": {
-    "mocha": "~1.7.1"
+    "mocha": "~1.7.1",
+    "mkdirp": "~0.3.4",
+    "rimraf": "~2.0.2"
   },
   "dependencies": {
     "batch": "~0.2.1"

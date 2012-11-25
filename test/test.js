@@ -1,11 +1,17 @@
 var sox = require('../')
   , assert = require('assert')
   , path = require('path')
+  , mkdirp = require('mkdirp')
+  , rimraf = require('rimraf')
+  , soundWav = path.join(__dirname, 'sound.wav')
+  , soundMp3 = path.join(__dirname, 'sound.mp3')
+  , tmpDir = path.join(__dirname, 'tmp')
+  , outputMp3 = path.join(tmpDir, 'output.mp3')
 
 describe("sox", function () {
   describe("identify", function () {
     it("wav", function(done) {
-      sox.identify(path.join(__dirname, 'sound.wav'), function (err, results) {
+      sox.identify(soundWav, function (err, results) {
         if (err) return done(err);
         assert.deepEqual(results, {
           format: 'wav',
@@ -33,7 +39,59 @@ describe("sox", function () {
       });
     });
   });
-  it("transcode", function(done) {
-    assert.fail();
+  describe("transcode", function() {
+    it("creating test directory", function(done) {
+      mkdirp(tmpDir, done);
+    });
+    it("wav -> mp3", function(done) {
+      var transcode = sox.transcode(soundWav, outputMp3);
+      transcode.on('error', function(err) {
+        console.dir(err);
+        done(err);
+      });
+      var progress = 0;
+      var progressEventCount = 0;
+      transcode.on('progress', function(amountDone, amountTotal) {
+        var newProgress = amountDone / amountTotal;
+        progressEventCount += 1;
+        assert(newProgress >= progress);
+        progress = newProgress;
+      });
+      var gotSrc = false;
+      transcode.on('src', function(info) {
+        gotSrc = true;
+        assert.deepEqual(info, {
+          format: 'wav',
+          duration: 1.5,
+          sampleCount: 66150,
+          channelCount: 1,
+          bitRate: 722944,
+          sampleRate: 44100,
+        });
+      });
+      var gotDest = false;
+      transcode.on('dest', function(info) {
+        gotDest = true;
+        assert.deepEqual(info, {
+          sampleRate: 44100,
+          format: 'mp3',
+          channelCount: 2,
+          sampleCount: 67958,
+          duration: 1.540998,
+          bitRate: 196608,
+        });
+      });
+      transcode.on('end', function() {
+        assert(gotSrc);
+        assert(gotDest);
+        assert.strictEqual(progress, 1);
+        assert(progressEventCount >= 3, "expected at lesat 3 progress events. got: " + progressEventCount);
+        done();
+      });
+      transcode.start();
+    });
+    it("removing tmp dir", function(done) {
+      rimraf(tmpDir, done);
+    });
   });
 });
