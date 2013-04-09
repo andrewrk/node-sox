@@ -1,6 +1,6 @@
 {
   "name": "sox",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "node.js interface to the sox audio utility",
   "main": "index.js",
   "scripts": {
