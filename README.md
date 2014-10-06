@@ -1,3 +1,16 @@
+# node-sox
+
+sox command line utility wrapper for Node.js. Identify and transcode audio
+files.
+
+## Alternative...
+
+For a more robust alternative, consider using
+[node-groove](https://github.com/andrewrk/node-groove).
+
+ * [metadata example code](https://github.com/andrewrk/node-groove/blob/master/example/metadata.js)
+ * [transcoding example code](https://github.com/andrewrk/node-groove/blob/master/example/transcode.js)
+
 ## Installation
 
  * Requires `sox` CLI to be installed. This can be installed via most linux
@@ -71,4 +84,5 @@ job.on('dest', function(info) {
 job.on('end', function() {
   console.log("all done");
 });
+job.start();
 ```
