@@ -3,6 +3,9 @@
 sox command line utility wrapper for Node.js. Identify and transcode audio
 files.
 
+This project has no maintainer. Email me if you would like to be the
+maintainer.
+
 ## Alternative...
 
 For a more robust alternative, consider using
