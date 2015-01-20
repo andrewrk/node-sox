@@ -24,7 +24,7 @@ var suffixMultiplier = {
   'g': 1024 * 1024 * 1024,
 };
 function parseBitRate(str) {
-  var mult = suffixMultiplier[str[str.length - 1]];
+  var mult = suffixMultiplier[str[str.length - 1].toLowerCase()];
   var n = parseInt(str, 10);
   return mult ? mult * n : n;
 }
