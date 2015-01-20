@@ -17,6 +17,7 @@ var conversions = {
   channelCount: int,
   duration: float,
   bitRate: parseBitRate,
+  bitsPerSample: int
 }
 var suffixMultiplier = {
   'k': 1024,
@@ -60,6 +61,7 @@ function identify(inputFile, callback){
   soxInfo('-s', function(value) { results.sampleCount   = value; });
   soxInfo('-D', function(value) { results.duration      = value; });
   soxInfo('-B', function(value) { results.bitRate       = value; });
+  soxInfo('-b', function(value) { results.bitsPerSample = value; });
 
   batch.end(function(err) {
     if (err) return callback(err);

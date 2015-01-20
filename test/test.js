@@ -19,6 +19,7 @@ describe("sox", function () {
           sampleCount: 66150,
           channelCount: 1,
           bitRate: 722944,
+          bitsPerSample: 16,
           sampleRate: 44100,
         });
         done();
@@ -33,6 +34,7 @@ describe("sox", function () {
           sampleCount: 47231,
           channelCount: 1,
           bitRate: 132096,
+          bitsPerSample: 0,
           sampleRate: 44100,
         });
         done();
