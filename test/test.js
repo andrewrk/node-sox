@@ -4,6 +4,7 @@ var sox = require('../')
   , mkdirp = require('mkdirp')
   , rimraf = require('rimraf')
   , soundWav = path.join(__dirname, 'sound.wav')
+  , soundWavBig = path.join(__dirname, 'sound-big.wav')
   , soundMp3 = path.join(__dirname, 'sound.mp3')
   , tmpDir = path.join(__dirname, 'tmp')
   , outputMp3 = path.join(tmpDir, 'output.mp3')
@@ -19,6 +20,20 @@ describe("sox", function () {
           sampleCount: 66150,
           channelCount: 1,
           bitRate: 722944,
+          sampleRate: 44100,
+        });
+        done();
+      });
+    });
+    it("wav-big", function(done) {
+      sox.identify(soundWavBig, function (err, results) {
+        if (err) return done(err);
+        assert.deepEqual(results, {
+          format: 'wav',
+          duration: 1,
+          sampleCount: 44100,
+          channelCount: 2,
+          bitRate: 1048576,
           sampleRate: 44100,
         });
         done();
