@@ -1,7 +1,7 @@
-var childProcess = require('child_process')
-  , EventEmitter = require('events').EventEmitter
-  , Batch = require('batch')
-  , util = require('util')
+var childProcess = require('child_process'),
+  EventEmitter = require('events').EventEmitter,
+  Batch = require('batch'),
+  util = require('util')
 
 exports.identify = identify;
 exports.transcode = transcode;
@@ -23,14 +23,15 @@ var suffixMultiplier = {
   'm': 1024 * 1024,
   'g': 1024 * 1024 * 1024,
 };
+
 function parseBitRate(str) {
   var mult = suffixMultiplier[str[str.length - 1]];
   var n = parseInt(str, 10);
   return mult ? mult * n : n;
 }
 
-function capture(exe, args, callback){
-  childProcess.execFile(exe, args, function(err, stdout, stderr){
+function capture(exe, args, callback) {
+  childProcess.execFile(exe, args, function(err, stdout, stderr) {
     if (err) {
       err.stdout = stdout;
       err.stderr = stderr;
@@ -42,24 +43,36 @@ function capture(exe, args, callback){
   });
 }
 
-function int(it){
+function int(it) {
   return parseInt(it, 10);
 }
 
-function float(it){
+function float(it) {
   return parseFloat(it, 10);
 }
 
-function identify(inputFile, callback){
-  var results = {}
-    , batch = new Batch()
+function identify(inputFile, callback) {
+  var results = {},
+    batch = new Batch()
 
-  soxInfo('-t', function(value) { results.format        = value; });
-  soxInfo('-r', function(value) { results.sampleRate    = value; });
-  soxInfo('-c', function(value) { results.channelCount  = value; });
-  soxInfo('-s', function(value) { results.sampleCount   = value; });
-  soxInfo('-D', function(value) { results.duration      = value; });
-  soxInfo('-B', function(value) { results.bitRate       = value; });
+  soxInfo('-t', function(value) {
+    results.format = value;
+  });
+  soxInfo('-r', function(value) {
+    results.sampleRate = value;
+  });
+  soxInfo('-c', function(value) {
+    results.channelCount = value;
+  });
+  soxInfo('-s', function(value) {
+    results.sampleCount = value;
+  });
+  soxInfo('-D', function(value) {
+    results.duration = value;
+  });
+  soxInfo('-B', function(value) {
+    results.bitRate = value;
+  });
 
   batch.end(function(err) {
     if (err) return callback(err);
@@ -96,6 +109,7 @@ function Transcode(inputFile, outputFile, options) {
   this.options.format = this.options.format || 'mp3';
   this.options.channelCount = this.options.channelCount || 2;
   this.options.bitRate = this.options.bitRate ? parseInt(this.options.bitRate, 10) : 192 * 1024;
+  this.options.bits = this.options.bits ? parseInt(this.options.bits, 10) : 16;
   if (this.options.format === 'mp3') {
     this.options.compressionQuality = this.options.compressionQuality || 5;
   }
@@ -121,8 +135,9 @@ Transcode.prototype.start = function() {
       '-r', self.options.sampleRate,
       '-t', self.options.format,
       '-C', Math.round(self.options.bitRate / 1024) +
-            self.options.compressionQuality,
+      self.options.compressionQuality,
       '-c', self.options.channelCount,
+      '-b', self.options.bits,
       self.outputFile
     ];
     var bin = childProcess.spawn('sox', args);
