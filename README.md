@@ -53,6 +53,7 @@ var job = sox.transcode('source.wav', 'dest.mp3', {
   channelCount: 2,
   bitRate: 192 * 1024,
   compressionQuality: 5, // see `man soxformat` search for '-C' for more info
+  bits: 16 // Encoded sample size in bits
 });
 job.on('error', function(err) {
   console.error(err);
