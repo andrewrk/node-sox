@@ -1,6 +1,6 @@
 {
   "name": "sox",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "node.js interface to the sox audio utility",
   "main": "index.js",
   "scripts": {
@@ -19,11 +19,11 @@
   ],
   "license": "BSD",
   "devDependencies": {
-    "mocha": "~1.7.1",
-    "mkdirp": "~0.3.4",
-    "rimraf": "~2.0.2"
+    "mocha": "~2.5.3",
+    "mkdirp": "~0.5.1",
+    "rimraf": "~2.5.4"
   },
   "dependencies": {
-    "batch": "~0.3.2"
+    "batch": "~0.5.3"
   }
 }
